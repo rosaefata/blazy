@@ -1,33 +1,28 @@
 package com.example.blazy.fragment;
 
-import androidx.lifecycle.ViewModelProvider;
-
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.blazy.activity.ActivityProductDetail;
 import com.example.blazy.ProductRecyclerviewAdapter;
-import com.example.blazy.R;
-import com.example.blazy.databinding.ActivityLoginBinding;
 import com.example.blazy.databinding.HomeFragmentBinding;
+import com.example.blazy.listener.ProductListener;
 import com.example.blazy.model.Product;
 import com.example.blazy.viewmodel.HomeViewModel;
 import com.example.blazy.viewmodel.ProductViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ProductListener {
 
     private HomeViewModel mViewModel;
     private ProductViewModel productViewModel;
@@ -61,7 +56,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productViewModel.getAllProducts().observe(getViewLifecycleOwner(), products -> {
-            productRecyclerviewAdapter.setProductList(products);
+            productRecyclerviewAdapter.setProductList(products, this);
         });
+    }
+
+    @Override
+    public void onClickItem(Product product) {
+        Intent intent = new Intent(getContext(), ActivityProductDetail.class);
+        intent.putExtra("key.product", product); // untuk parse data
+        startActivity(intent);
     }
 }
