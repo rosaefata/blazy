@@ -1,11 +1,12 @@
 package com.example.blazy.model;
 
-import android.media.Rating;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+import java.io.Serializable;
+
+//implement serializable untuk parsing data product
+public class Product implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -25,9 +26,9 @@ public class Product {
     @SerializedName("image")
     @Expose
     private String image;
-    @SerializedName("rating")
-    @Expose
-    private Rating rating;
+//    @SerializedName("rating")
+//    @Expose
+//    private Rating rating; //rating di comment dulu karena serializable tidak bisa terima object Rating
 
     public Integer getId() {
         return id;
@@ -77,11 +78,11 @@ public class Product {
         this.image = image;
     }
 
-    public Rating getRating() {
-        return rating;
-    }
+//    public Rating getRating() {
+//        return rating;
+//    }
 
-    public void setRating(Rating rating) {
-        this.rating = rating;
-    }
+//    public void setRating(Rating rating) {
+//        this.rating = rating;
+//    }
 }
