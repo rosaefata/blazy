@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.blazy.databinding.ProductCardViewBinding;
+import com.example.blazy.listener.ProductListener;
 import com.example.blazy.model.Product;
 import com.squareup.picasso.Picasso;
 
@@ -22,15 +23,17 @@ public class ProductRecyclerviewAdapter extends RecyclerView.Adapter<ProductRecy
     private Context context;
     private List<Product> productList;
     private ProductCardViewBinding productCardViewBinding;
+    private ProductListener productListener;
 
     public ProductRecyclerviewAdapter(Context context) {
         this.context = context;
         this.productList = new ArrayList<>();
     }
 
-    public void setProductList(List<Product> list){
+    public void setProductList(List<Product> list, ProductListener productListener){
         this.productList.clear();
         this.productList = list;
+        this.productListener= productListener;
         notifyDataSetChanged();
     }
 
@@ -47,6 +50,14 @@ public class ProductRecyclerviewAdapter extends RecyclerView.Adapter<ProductRecy
         Picasso.get().load(productList.get(position).getImage()).into(holder.productImage);
         holder.productName.setText(productList.get(position).getTitle());
         holder.productPrice.setText("$" + productList.get(position).getPrice().toString());
+
+        //action saat item di klik
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productListener.onClickItem(productList.get(holder.getAdapterPosition())); //ambil id position item yg di klik
+            }
+        });
     }
 
     @Override
