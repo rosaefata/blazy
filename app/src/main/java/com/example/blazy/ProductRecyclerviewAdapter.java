@@ -45,7 +45,12 @@ public class ProductRecyclerviewAdapter extends RecyclerView.Adapter<ProductRecy
     @Override
     public void onBindViewHolder(@NonNull ProductCardHolder holder, int position) {
         Picasso.get().load(productList.get(position).getImage()).into(holder.productImage);
-        holder.productName.setText(productList.get(position).getTitle());
+
+        String productName = productList.get(position).getTitle();
+        if(productList.get(position).getTitle().length() > 30){
+            productName = productList.get(position).getTitle().substring(0, 30) + "...";
+        }
+        holder.productName.setText(productName);
         holder.productPrice.setText("$" + productList.get(position).getPrice().toString());
     }
 

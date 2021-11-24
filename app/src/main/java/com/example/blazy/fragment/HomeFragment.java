@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.blazy.LoadingDialog;
 import com.example.blazy.ProductRecyclerviewAdapter;
 import com.example.blazy.R;
 import com.example.blazy.databinding.ActivityLoginBinding;
@@ -34,6 +35,7 @@ public class HomeFragment extends Fragment {
     private HomeFragmentBinding homeFragmentBinding;
     private RecyclerView recyclerView;
     private ProductRecyclerviewAdapter productRecyclerviewAdapter;
+    private LoadingDialog loadingDialog;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -43,14 +45,16 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         productViewModel = new ViewModelProvider(requireActivity()).get(ProductViewModel.class);
+        loadingDialog = new LoadingDialog(getActivity());
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        Log.d("HOME", "onCreateView: MASUK");
+
         homeFragmentBinding = HomeFragmentBinding.inflate(inflater, container, false);
 
+        loadingDialog.showLoadingDialog();
         productRecyclerviewAdapter = new ProductRecyclerviewAdapter(getContext());
         homeFragmentBinding.homeProductRv.setAdapter(productRecyclerviewAdapter);
         homeFragmentBinding.homeProductRv.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -61,6 +65,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productViewModel.getAllProducts().observe(getViewLifecycleOwner(), products -> {
+            loadingDialog.dismissDialog();
             productRecyclerviewAdapter.setProductList(products);
         });
     }
