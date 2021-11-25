@@ -12,13 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Blazy">
         <activity
-            android:name=".activity.MainActivity2"
+            android:name=".ui.activity.MainActivity2"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".ui.activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ActivityProductDetail"
+            android:name=".ui.activity.ActivityProductDetail"
             android:exported="true" />
     </application>
 

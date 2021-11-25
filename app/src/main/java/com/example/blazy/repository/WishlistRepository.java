@@ -1,8 +1,12 @@
-package com.example.blazy.room;
+package com.example.blazy.repository;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.blazy.room.AppDatabase;
+import com.example.blazy.model.Wishlist;
+import com.example.blazy.room.dao.WishlistDao;
 
 import java.util.List;
 
@@ -16,7 +20,7 @@ public class WishlistRepository {
         listFav = wishlistDao.getWishlist();
     }
 
-    LiveData<List<Wishlist>> getListFav(){
+    public LiveData<List<Wishlist>> getListFav(){
         return listFav;
     }
 

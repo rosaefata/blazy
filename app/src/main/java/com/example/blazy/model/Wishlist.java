@@ -1,4 +1,4 @@
-package com.example.blazy.room;
+package com.example.blazy.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

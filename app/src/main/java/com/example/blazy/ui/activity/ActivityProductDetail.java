@@ -1,4 +1,4 @@
-package com.example.blazy.activity;
+package com.example.blazy.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,15 +8,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.blazy.R;
 import com.example.blazy.model.Product;
-import com.example.blazy.room.Wishlist;
+import com.example.blazy.model.Wishlist;
 import com.example.blazy.viewmodel.ProductDetailViewModel;
 import com.squareup.picasso.Picasso;
 
-public class ActivityProductDetail extends AppCompatActivity {
+public class ActivityProductDetail extends BaseActivity {
 
     public Integer productId;
     public ProductDetailViewModel prodDtlViewModel;

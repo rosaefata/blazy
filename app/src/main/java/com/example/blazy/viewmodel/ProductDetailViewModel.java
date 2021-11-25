@@ -4,12 +4,9 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
-import com.example.blazy.room.Wishlist;
-import com.example.blazy.room.WishlistRepository;
-
-import java.util.List;
+import com.example.blazy.model.Wishlist;
+import com.example.blazy.repository.WishlistRepository;
 
 public class ProductDetailViewModel extends AndroidViewModel {
     private WishlistRepository wishRepository;

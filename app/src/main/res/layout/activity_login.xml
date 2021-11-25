@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity">
+    tools:context=".ui.activity.LoginActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="144dp"
         android:textColor="@color/black"
-        android:text="Sign in"
-        style="@style/MediumBold"
+        android:text="Sign In"
+        android:textSize="30dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

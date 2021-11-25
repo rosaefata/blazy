@@ -4,4 +4,6 @@ import com.example.blazy.model.Product;
 
 public interface ProductListener {
     public void onClickItem(Product product);
+    public void onDataNotFound();
+    public void onDataFound();
 }

@@ -1,10 +1,13 @@
-package com.example.blazy.room;
+package com.example.blazy.viewmodel;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.blazy.model.Wishlist;
+import com.example.blazy.repository.WishlistRepository;
 
 import java.util.List;
 

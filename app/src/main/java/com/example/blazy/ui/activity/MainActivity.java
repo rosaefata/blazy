@@ -1,13 +1,12 @@
-package com.example.blazy.activity;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.blazy.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.blazy.R;
-import com.example.blazy.fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
     public static int SPLASH_TIME_OUT = 2000;
