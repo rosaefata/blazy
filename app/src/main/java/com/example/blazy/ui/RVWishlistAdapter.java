@@ -1,5 +1,7 @@
 package com.example.blazy.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,9 +54,11 @@ public class RVWishlistAdapter extends RecyclerView.Adapter<RVWishlistAdapter.vH
         holder.ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wishlistListener.deleteWishlist(wishlist.get(holder.getAdapterPosition()));
+                confirmDelete(holder, holder.getAdapterPosition());
+                //wishlistListener.deleteWishlist(wishlist.get(holder.getAdapterPosition()));
             }
-        });
+        }
+        );
     }
 
     @Override
@@ -88,5 +92,24 @@ public class RVWishlistAdapter extends RecyclerView.Adapter<RVWishlistAdapter.vH
             Picasso.get().load(wishlist.getImage_wishlist()).into(ivProdWishlist);
         }
 
+    }
+
+    public void confirmDelete(vHolder holder, int position) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(holder.itemView.getContext());
+        alert.setMessage("Are you sure?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        wishlistListener.deleteWishlist(wishlist.get(holder.getAdapterPosition()));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create()
+                .show();
     }
 }
