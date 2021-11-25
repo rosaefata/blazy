@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/card_width"
-    android:layout_height="@dimen/card_width"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="@dimen/radius"
     app:cardElevation="@dimen/elevation"
-    android:padding="@dimen/activity_vertical_padding"
+    android:layout_marginVertical="@dimen/activity_vertical_margin"
+    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
     android:layout_gravity="center_horizontal|center_vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
 
         <ImageView
@@ -22,9 +24,10 @@
 
         <TextView
             android:id="@+id/error_msg"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal|center_vertical"
+
             style="@style/Medium"
             android:textColor="@color/black"
             android:text="@string/invalid_credential"

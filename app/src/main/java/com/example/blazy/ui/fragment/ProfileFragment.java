@@ -1,20 +1,19 @@
-package com.example.blazy.fragment;
+package com.example.blazy.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.example.blazy.R;
-import com.example.blazy.databinding.HomeFragmentBinding;
+import com.example.blazy.ui.activity.LoginActivity;
 import com.example.blazy.databinding.ProfileFragmentBinding;
 import com.example.blazy.model.apiresponse.userlogin.Data;
 import com.example.blazy.util.SessionManagerUtil;
-
-import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,15 +28,6 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         return fragment;
@@ -55,9 +45,23 @@ public class ProfileFragment extends Fragment {
         profileFragmentBinding = ProfileFragmentBinding.inflate(inflater, container, false);
 
         Data userData =  SessionManagerUtil.getInstance().getUserData(getContext());
-//        profileFragmentBinding.profilePict.setImageResource(R.drawable.circle);
+        profileFragmentBinding.profilePict.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.circle));
+        profileFragmentBinding.profilePict.setImageResource(R.drawable.ic_baseline_person_24);
         profileFragmentBinding.email.setText(userData.getEmail());
         profileFragmentBinding.fullName.setText(userData.getFullName());
+        profileFragmentBinding.signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SessionManagerUtil.getInstance().endUserSession(getContext());
+                startLoginActivity();
+            }
+        });
         return profileFragmentBinding.getRoot();
+    }
+
+    private void startLoginActivity(){
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

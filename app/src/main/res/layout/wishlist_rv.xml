@@ -17,21 +17,21 @@
 
             <ImageView
                 android:id="@+id/iv_prod_wishlist"
+                android:background="@color/white"
                 android:layout_width="120dp"
                 android:layout_height="90dp"
                 android:padding="4dp" />
 
             <TextView
                 android:id="@+id/tv_prod_wishlist"
-                android:layout_width="wrap_content"
+                style="@style/SmallBold"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/iv_prod_wishlist"
                 android:text="Product Name"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:textColor="#000000"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textColor="#000000" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,6 +42,7 @@
 
                 <TextView
                     android:id="@+id/tv_curr_wishlist"
+                    style="@style/Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_prod_wishlist"
@@ -50,27 +51,28 @@
                     android:layout_toRightOf="@id/iv_prod_wishlist"
                     android:text="$ "
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                    android:textSize="20sp" />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/tv_price_wishlist"
+                    style="@style/Small"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_prod_wishlist"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/iv_prod_wishlist"
+                    android:layout_weight="1"
                     android:text="xxx,xxx"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                    android:textSize="20sp"
-                    android:layout_weight="1"/>
+                    android:textColor="@color/black" />
 
                 <ImageButton
                     android:id="@+id/ib_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_delete_24"
-                    />
+                    android:layout_gravity="bottom|right"
+                    android:src="@drawable/ic_baseline_delete_24" />
 
             </LinearLayout>
 

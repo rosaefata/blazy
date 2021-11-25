@@ -1,17 +1,16 @@
-package com.example.blazy.activity;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+package com.example.blazy.ui.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.example.blazy.R;
-import com.example.blazy.databinding.ActivityLoginBinding;
 import com.example.blazy.databinding.ActivityMain2Binding;
-import com.example.blazy.fragment.HomeFragment;
-import com.example.blazy.fragment.ProfileFragment;
+import com.example.blazy.ui.fragment.HomeFragment;
+import com.example.blazy.ui.fragment.ProfileFragment;
+import com.example.blazy.ui.fragment.WishlistFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity2 extends BaseActivity {
@@ -22,6 +21,7 @@ public class MainActivity2 extends BaseActivity {
         super.onCreate(savedInstanceState);
         activityBinding = ActivityMain2Binding.inflate(getLayoutInflater());
         setContentView(activityBinding.getRoot());
+        getSupportActionBar().hide();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -39,6 +39,7 @@ public class MainActivity2 extends BaseActivity {
                         selectedFragment = HomeFragment.newInstance();
                         break;
                     case R.id.wishlist:
+                        selectedFragment = WishlistFragment.newInstance();
                         break;
                     case R.id.profile:
                         selectedFragment = ProfileFragment.newInstance();

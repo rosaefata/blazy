@@ -1,17 +1,13 @@
 package com.example.blazy.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.blazy.model.Product;
 import com.example.blazy.model.apiresponse.userlogin.UserLoginResponse;
 import com.example.blazy.repository.UserLoginRepository;
-
-import java.util.List;
 
 public class UserLoginViewModel extends AndroidViewModel {
 

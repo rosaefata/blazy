@@ -5,21 +5,30 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.blazy.api.fakestore.FakeStoreApiEndpointInterface;
 import com.example.blazy.api.fakestore.FakeStoreRetrofitInstance;
 import com.example.blazy.model.Product;
+import com.example.blazy.room.AppDatabase;
+import com.example.blazy.room.dao.ProductDao;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductRepository {
     private FakeStoreApiEndpointInterface API;
-    private MutableLiveData<List<Product>> allProducts = new MutableLiveData<>();
+    private LiveData<List<Product>> listProduct = new MutableLiveData<>();
+    private ProductDao productDao;
 
     private final ExecutorService callApiExecutor =
             Executors.newSingleThreadExecutor();
@@ -32,33 +41,80 @@ public class ProductRepository {
     };
 
     public ProductRepository(Application application){
-        FakeStoreRetrofitInstance instance = new FakeStoreRetrofitInstance();
-        API = instance.getAPI();
+        AppDatabase db = AppDatabase.getDatabase(application);
+        this.productDao = db.productDao();
+        this.listProduct = productDao.getAllProduct();
+
     }
 
-    public void getProductsFromApi(){
-        callApiExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<Product> productList = API.getProductList().execute().body();
-                    mainThread.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            allProducts.setValue(productList);
-                        }
+//    public void getProductsFromApi(){
+//        callApiExecutor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    List<Product> productList = API.getProductList().execute().body();
+//                    mainThread.execute(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            allProducts.setValue(productList);
+//                        }
+//                    });
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
+//
+//    public MutableLiveData<List<Product>> getAllProducts(){
+//        if (allProducts.getValue() == null || allProducts.getValue().isEmpty())
+//            getProductsFromApi();
+//        return allProducts;
+//    }
+
+    public LiveData<List<Product>> getAllProducts(){
+        return listProduct;
+    }
+
+    public void setProducts(boolean reload, DataReadyListener listener){
+        if(reload){
+            FakeStoreRetrofitInstance instance = new FakeStoreRetrofitInstance();
+            API = instance.getAPI();
+            API.getProductList().enqueue(new Callback<List<Product>>() {
+                @Override
+                public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                    Future<?> future = AppDatabase.databaseWriteExecutor.submit(() -> {
+                        productDao.deleteAll(); //remove this if you want to keep previous data
+
+                        productDao.insertAll(response.body());
+
+                        Log.d("product repo", "Data inserted");
                     });
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+                    try {
+                        future.get();
+                        if (future.isDone())
+                            listener.onDataReady(listProduct);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+
+                @Override
+                public void onFailure(Call<List<Product>> call, Throwable t) {
+
+                }
+            });
+        }else{
+            listener.onDataReady(listProduct);
+        }
     }
 
-    public MutableLiveData<List<Product>> getAllProducts(){
-        if (allProducts.getValue() == null || allProducts.getValue().isEmpty())
-            getProductsFromApi();
-        return allProducts;
-    }
+
+        public interface DataReadyListener{
+            void onDataReady(LiveData<List<Product>> products);
+        }
 
 }

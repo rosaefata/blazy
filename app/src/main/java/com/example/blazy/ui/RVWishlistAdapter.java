@@ -1,4 +1,4 @@
-package com.example.blazy;
+package com.example.blazy.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.blazy.R;
 import com.example.blazy.listener.WishlistListener;
-import com.example.blazy.room.Wishlist;
+import com.example.blazy.model.Wishlist;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

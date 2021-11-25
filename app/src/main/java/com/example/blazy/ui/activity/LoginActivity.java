@@ -1,8 +1,4 @@
-package com.example.blazy.activity;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
+package com.example.blazy.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -12,19 +8,26 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.blazy.LoadingDialog;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.blazy.ui.LoadingDialog;
 import com.example.blazy.R;
 import com.example.blazy.api.userlogin.UserLoginRetrofitInstance;
 import com.example.blazy.databinding.ActivityLoginBinding;
 import com.example.blazy.databinding.FailLoginDialogBinding;
+import com.example.blazy.model.Product;
 import com.example.blazy.model.apiresponse.userlogin.Data;
 import com.example.blazy.model.apiresponse.userlogin.UserLoginResponse;
+import com.example.blazy.repository.ProductRepository;
 import com.example.blazy.util.SessionManagerUtil;
 import com.example.blazy.viewmodel.ProductViewModel;
 import com.example.blazy.viewmodel.UserLoginViewModel;
 
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -41,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private Dialog failLoginDailog;
     private View view;
     private LoadingDialog loadingDialog;
+    private ProductViewModel productViewModel;
 
     private Executor backgroundThread = Executors.newSingleThreadExecutor();
     private Executor mainThread = new Executor() {
@@ -61,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         setDialog();
         loadingDialog = new LoadingDialog(this);
         userLoginViewModel = new ViewModelProvider(this).get(UserLoginViewModel.class);
-
+        productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
         activityLoginBinding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,13 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                 String token = "";
 
                 loadingDialog.showLoadingDialog();
-//                UserLoginResponse userLoginResponse =  userLoginViewModel.userLogin(username, password).getValue();
-//                boolean isUserValid =  userLoginResponse.getStatus();
-//                if(!isUserValid){
-//                    Toast.makeText(getApplicationContext(), "Username dan password tidak boleh kosong!!", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                login(userLoginResponse.getToken());
 
                 UserLoginRetrofitInstance.getAPIV2().userLogin("454041184B0240FBA3AACD15A1F7A8BB",username, password).enqueue(new Callback<UserLoginResponse>() {
                     @Override
@@ -84,6 +81,12 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("RETRO", "Response = " + response);
 
                         if(isValidLogin(response)) login(response.body().getToken(), response.body().getData());
+                        productViewModel.setAllProduct(true, new ProductRepository.DataReadyListener() {
+                            @Override
+                            public void onDataReady(LiveData<List<Product>> products) {
+
+                            }
+                        });
                     }
 
                     @Override
@@ -109,7 +112,6 @@ public class LoginActivity extends AppCompatActivity {
 
             boolean isUserValid =  userLoginResponse.getStatus();
             if(!isUserValid){
-//                            Toast.makeText(getApplicationContext(), "Username dan password tidak boleh kosong!!", Toast.LENGTH_SHORT).show();
                 showFailLoginDialog(R.string.invalid_credential);
                 return false;
             }
@@ -120,12 +122,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+
     private void login(String token, Data userData){
         backgroundThread.execute(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
-//                SystemClock.sleep(3000);
                 mainThread.execute(new Runnable() {
                     @Override
                     public void run() {

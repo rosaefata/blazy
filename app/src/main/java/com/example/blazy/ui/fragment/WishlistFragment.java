@@ -1,10 +1,11 @@
-package com.example.blazy.fragment;
+package com.example.blazy.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,20 +13,26 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.blazy.activity.ActivityProductDetail;
 import com.example.blazy.R;
-import com.example.blazy.RVWishlistAdapter;
+import com.example.blazy.ui.RVWishlistAdapter;
+import com.example.blazy.ui.activity.ActivityProductDetail;
 import com.example.blazy.listener.WishlistListener;
 import com.example.blazy.model.Product;
-import com.example.blazy.room.Wishlist;
-import com.example.blazy.room.WishlistViewModel;
+import com.example.blazy.model.Wishlist;
+import com.example.blazy.viewmodel.WishlistViewModel;
 
 public class WishlistFragment extends Fragment implements WishlistListener {
 
     private RecyclerView rvWishlist;
+    private View view;
+    TextView text;
 
     public WishlistViewModel wishlistViewModel;
 
+    public static WishlistFragment newInstance() {
+        WishlistFragment fragment = new WishlistFragment();
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +45,7 @@ public class WishlistFragment extends Fragment implements WishlistListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
+        view = inflater.inflate(R.layout.fragment_wishlist, container, false);
 
         return view;
     }
@@ -55,7 +62,14 @@ public class WishlistFragment extends Fragment implements WishlistListener {
 
         wishlistViewModel.getWishlist().observe(getViewLifecycleOwner(), wishlist -> {
             rvWishlistAdapter.setWishlist(wishlist, this);
+            if(wishlist.isEmpty()){
+                onDataNotFound();
+            }else {
+                onDataFound();
+            }
         });
+
+        text = view.findViewById(R.id.text_no_data_wl);
     }
 
     @Override
@@ -72,6 +86,17 @@ public class WishlistFragment extends Fragment implements WishlistListener {
         intent.putExtra("key.product", product);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onDataFound() {
+
+        text.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDataNotFound() {
+        text.setVisibility(View.VISIBLE);
     }
 
     @Override

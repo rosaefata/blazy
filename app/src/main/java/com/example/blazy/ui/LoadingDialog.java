@@ -1,4 +1,4 @@
-package com.example.blazy;
+package com.example.blazy.ui;
 
 import android.app.Activity;
 import android.app.Dialog;

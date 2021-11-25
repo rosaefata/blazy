@@ -3,13 +3,13 @@
     <style name="Small">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:text">sans-serif</item>
     </style>
     <style name="SmallBold">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:text">sans-serif</item>
     </style>
     <style name="Medium" >
@@ -21,7 +21,7 @@
     <style name="MediumBold" >
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:text">sans-serif</item>
     </style>
 </resources>
