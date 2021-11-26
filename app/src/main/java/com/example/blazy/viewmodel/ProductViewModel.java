@@ -33,4 +33,8 @@ public class ProductViewModel extends AndroidViewModel {
         return allProducts;
     }
 
+    public void deleteAllProduct(){
+        productRepository.deleteAllProduct();
+    }
+
 }
