@@ -29,7 +29,7 @@ public class SessionManagerUtil {
 
     public void storeSession(Context context,String token, Data userData){
         SessionManagerUtil.getInstance().storeUserToken(context, token, userData);
-        SessionManagerUtil.getInstance().startUserSession(context, 120);
+        SessionManagerUtil.getInstance().startUserSession(context, 600);
     }
 
     public void startUserSession(Context context, int expiredIn){

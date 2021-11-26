@@ -72,28 +72,6 @@ public class LoginActivity extends AppCompatActivity {
                 processLogin(username, password);
 
 
-//                UserLoginRetrofitInstance.getAPIV2().userLogin("454041184B0240FBA3AACD15A1F7A8BB",username, password).enqueue(new Callback<UserLoginResponse>() {
-//                    @Override
-//                    public void onResponse(Call<UserLoginResponse> call, Response<UserLoginResponse> response) {
-//                        Log.d("RETRO", "Response = " + response);
-//
-//                        if(isValidLogin(response)) login(response.body().getToken(), response.body().getData());
-//                        productViewModel.setAllProduct(true, new ProductRepository.DataReadyListener() {
-//                            @Override
-//                            public void onDataReady(LiveData<List<Product>> products) {
-//
-//                            }
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<UserLoginResponse> call, Throwable t) {
-//                        Log.d("RETRO", "fail call api");
-//                        loadingDialog.dismissDialog();
-//                        showFailLoginDialog(R.string.login_failed);
-//                    }
-//                });
-
             }
         });
     }
@@ -110,26 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-//    private boolean isValidLogin(Response<UserLoginResponse> response){
-//
-//        loadingDialog.dismissDialog();
-//        if(!response.isSuccessful()){
-//            showFailLoginDialog(R.string.invalid_credential);
-//            return false;
-//        }else{
-//            userLoginResponse = response.body();
-//
-//            boolean isUserValid =  userLoginResponse.getStatus();
-//            if(!isUserValid){
-//                showFailLoginDialog(R.string.invalid_credential);
-//                return false;
-//            }
-//
-//            return true;
-//        }
-//
-//
-//    }
+
 
     private boolean isValidLogin(UserLoginResponse response){
 

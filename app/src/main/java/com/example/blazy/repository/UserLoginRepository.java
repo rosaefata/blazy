@@ -45,17 +45,7 @@ public class UserLoginRepository {
         callApiExecutor.execute(new Runnable() {
             @Override
             public void run() {
-//                try {
-//                    UserLoginResponse userLoginResponse = API.userLogin("454041184B0240FBA3AACD15A1F7A8BB", username, password).execute().body();
-//                    mainThread.execute(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            user.setValue(userLoginResponse);
-//                        }
-//                    });
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+
 
                API.userLogin("454041184B0240FBA3AACD15A1F7A8BB", username, password).enqueue(new Callback<UserLoginResponse>() {
                    @Override
