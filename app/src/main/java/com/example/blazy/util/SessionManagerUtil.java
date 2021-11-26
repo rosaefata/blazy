@@ -7,7 +7,6 @@ import com.example.blazy.model.apiresponse.userlogin.Data;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Set;
 
 public class SessionManagerUtil {
 
@@ -28,6 +27,11 @@ public class SessionManagerUtil {
         return INSTANCE;
     }
 
+    public void storeSession(Context context,String token, Data userData){
+        SessionManagerUtil.getInstance().storeUserToken(context, token, userData);
+        SessionManagerUtil.getInstance().startUserSession(context, 600);
+    }
+
     public void startUserSession(Context context, int expiredIn){
         Calendar calendar = Calendar.getInstance();
         Date userLoggedTime = calendar.getTime();
@@ -46,10 +50,6 @@ public class SessionManagerUtil {
         return !currentTime.after(sessionExpiresAt);
     }
 
-    public boolean isSessionActive(Context context){
-        if(isUserLoggedIn(context)) return true;
-        else return false;
-    }
 
     private long getExpiryDateFromPreference(Context context){
         return context.getSharedPreferences(SESSION_PREFERENCE, Context.MODE_PRIVATE)
