@@ -47,30 +47,12 @@ public class ProductRepository {
 
     }
 
-//    public void getProductsFromApi(){
-//        callApiExecutor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    List<Product> productList = API.getProductList().execute().body();
-//                    mainThread.execute(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            allProducts.setValue(productList);
-//                        }
-//                    });
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//    }
-//
-//    public MutableLiveData<List<Product>> getAllProducts(){
-//        if (allProducts.getValue() == null || allProducts.getValue().isEmpty())
-//            getProductsFromApi();
-//        return allProducts;
-//    }
+    public void deleteAllProduct(){
+        Future<?> future = AppDatabase.databaseWriteExecutor.submit(() -> {
+            productDao.deleteAll();
+            Log.d("PRODUCT REPO", "Data deleted");
+        });
+    }
 
     public LiveData<List<Product>> getAllProducts(){
         return listProduct;
@@ -84,11 +66,11 @@ public class ProductRepository {
                 @Override
                 public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                     Future<?> future = AppDatabase.databaseWriteExecutor.submit(() -> {
-                        productDao.deleteAll(); //remove this if you want to keep previous data
+                        productDao.deleteAll();
 
                         productDao.insertAll(response.body());
 
-                        Log.d("product repo", "Data inserted");
+                        Log.d("PRODUCT REPO", "Data inserted");
                     });
 
                     try {

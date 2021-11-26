@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.blazy.R;
-import com.example.blazy.ui.activity.LoginActivity;
 import com.example.blazy.databinding.ProfileFragmentBinding;
 import com.example.blazy.model.apiresponse.userlogin.Data;
+import com.example.blazy.ui.activity.LoginActivity;
 import com.example.blazy.util.SessionManagerUtil;
+import com.example.blazy.viewmodel.ProductViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +25,7 @@ import com.example.blazy.util.SessionManagerUtil;
 public class ProfileFragment extends Fragment {
 
     private ProfileFragmentBinding profileFragmentBinding;
+    private ProductViewModel productViewModel;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -36,6 +39,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        productViewModel = new ViewModelProvider(requireActivity()).get(ProductViewModel.class);
     }
 
     @Override
@@ -43,6 +47,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         profileFragmentBinding = ProfileFragmentBinding.inflate(inflater, container, false);
+
 
         Data userData =  SessionManagerUtil.getInstance().getUserData(getContext());
         profileFragmentBinding.profilePict.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.circle));
@@ -52,6 +57,7 @@ public class ProfileFragment extends Fragment {
         profileFragmentBinding.signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                productViewModel.deleteAllProduct();
                 SessionManagerUtil.getInstance().endUserSession(getContext());
                 startLoginActivity();
             }
