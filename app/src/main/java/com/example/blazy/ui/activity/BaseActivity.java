@@ -6,10 +6,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.blazy.util.SessionManagerUtil;
 
+import java.util.Calendar;
+
 public class BaseActivity extends AppCompatActivity {
 
-    public void checkSession(String token){
-        boolean isAllowed = SessionManagerUtil.getInstance().isSessionActive(this);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkSession();
+    }
+
+
+    public void checkSession(){
+        boolean isAllowed = SessionManagerUtil.getInstance().isSessionActive(this, Calendar.getInstance().getTime())
+                && SessionManagerUtil.getInstance().isUserLoggedIn(this);
         if (!isAllowed) {
             SessionManagerUtil.getInstance().endUserSession(this);
             Intent intent = new Intent(this, LoginActivity.class);

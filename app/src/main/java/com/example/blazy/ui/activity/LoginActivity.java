@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
@@ -14,15 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.blazy.ui.LoadingDialog;
 import com.example.blazy.R;
-import com.example.blazy.api.userlogin.UserLoginRetrofitInstance;
 import com.example.blazy.databinding.ActivityLoginBinding;
 import com.example.blazy.databinding.FailLoginDialogBinding;
 import com.example.blazy.model.Product;
 import com.example.blazy.model.apiresponse.userlogin.Data;
 import com.example.blazy.model.apiresponse.userlogin.UserLoginResponse;
 import com.example.blazy.repository.ProductRepository;
+import com.example.blazy.ui.LoadingDialog;
 import com.example.blazy.util.SessionManagerUtil;
 import com.example.blazy.viewmodel.ProductViewModel;
 import com.example.blazy.viewmodel.UserLoginViewModel;
@@ -30,10 +28,6 @@ import com.example.blazy.viewmodel.UserLoginViewModel;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -75,47 +69,75 @@ public class LoginActivity extends AppCompatActivity {
 
                 loadingDialog.showLoadingDialog();
 
-                UserLoginRetrofitInstance.getAPIV2().userLogin("454041184B0240FBA3AACD15A1F7A8BB",username, password).enqueue(new Callback<UserLoginResponse>() {
-                    @Override
-                    public void onResponse(Call<UserLoginResponse> call, Response<UserLoginResponse> response) {
-                        Log.d("RETRO", "Response = " + response);
+                processLogin(username, password);
 
-                        if(isValidLogin(response)) login(response.body().getToken(), response.body().getData());
-                        productViewModel.setAllProduct(true, new ProductRepository.DataReadyListener() {
-                            @Override
-                            public void onDataReady(LiveData<List<Product>> products) {
 
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Call<UserLoginResponse> call, Throwable t) {
-                        Log.d("RETRO", "fail call api");
-                        loadingDialog.dismissDialog();
-                        showFailLoginDialog(R.string.login_failed);
-                    }
-                });
+//                UserLoginRetrofitInstance.getAPIV2().userLogin("454041184B0240FBA3AACD15A1F7A8BB",username, password).enqueue(new Callback<UserLoginResponse>() {
+//                    @Override
+//                    public void onResponse(Call<UserLoginResponse> call, Response<UserLoginResponse> response) {
+//                        Log.d("RETRO", "Response = " + response);
+//
+//                        if(isValidLogin(response)) login(response.body().getToken(), response.body().getData());
+//                        productViewModel.setAllProduct(true, new ProductRepository.DataReadyListener() {
+//                            @Override
+//                            public void onDataReady(LiveData<List<Product>> products) {
+//
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<UserLoginResponse> call, Throwable t) {
+//                        Log.d("RETRO", "fail call api");
+//                        loadingDialog.dismissDialog();
+//                        showFailLoginDialog(R.string.login_failed);
+//                    }
+//                });
 
             }
         });
     }
 
-    private boolean isValidLogin(Response<UserLoginResponse> response){
+    private void processLogin(String username, String password){
+        userLoginViewModel.userLogin(username, password).observe(this, user -> {
+            if(isValidLogin(user)) login(user.getToken(), user.getData());
+            productViewModel.setAllProduct(true, new ProductRepository.DataReadyListener() {
+                @Override
+                public void onDataReady(LiveData<List<Product>> products) {
+
+                }
+            });
+        });
+    }
+
+//    private boolean isValidLogin(Response<UserLoginResponse> response){
+//
+//        loadingDialog.dismissDialog();
+//        if(!response.isSuccessful()){
+//            showFailLoginDialog(R.string.invalid_credential);
+//            return false;
+//        }else{
+//            userLoginResponse = response.body();
+//
+//            boolean isUserValid =  userLoginResponse.getStatus();
+//            if(!isUserValid){
+//                showFailLoginDialog(R.string.invalid_credential);
+//                return false;
+//            }
+//
+//            return true;
+//        }
+//
+//
+//    }
+
+    private boolean isValidLogin(UserLoginResponse response){
 
         loadingDialog.dismissDialog();
-        if(!response.isSuccessful()){
+        if(!response.getStatus()){
             showFailLoginDialog(R.string.invalid_credential);
             return false;
         }else{
-            userLoginResponse = response.body();
-
-            boolean isUserValid =  userLoginResponse.getStatus();
-            if(!isUserValid){
-                showFailLoginDialog(R.string.invalid_credential);
-                return false;
-            }
-
             return true;
         }
 
@@ -153,9 +175,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     private void storeSession(String token, Data userData){
-        SessionManagerUtil.getInstance().storeUserToken(this, token, userData);
+        SessionManagerUtil.getInstance().storeSession(this, token, userData);
     }
 
     private void startHomeActivity(){
